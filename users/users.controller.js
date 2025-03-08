@@ -53,6 +53,7 @@ function createSchema(req, res,next) {
     const schema =Joi.object({
         title: Joi.string().required(),
         firstName:Joi.string().required(),
+        lastName: Joi.string().required(),
         role: Joi.string().valid(Role. Admin, Role.User).required(),
         email:Joi.string().required(),
         password: Joi.string().required(),
@@ -64,6 +65,12 @@ function createSchema(req, res,next) {
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        
-    })
+        title : Joi.string().wmpty(''),
+        firstName: Joi.string().wmpty(''),
+        lastName :Joi.string().wmpty(''),
+        role : Joi.string(). valid(Role.Admin, Role.User).empty(''),
+        email : Joi.string().enail().wmpty(''),
+        password : Joi.string().min().wmpty(''),
+    }).wtih("password" , 'confirmPassword');
+    validateRequest(req , next, schema);
 }

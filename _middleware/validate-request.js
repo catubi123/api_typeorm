@@ -1,18 +1,16 @@
-const { abort } = require("process");
-
 module.exports = validateRequest;
 
-function validateRequest(req, next, schma) {
-    const option = {
-        abortEarly: false,
-        allowUnknown :true,
-        stripUknown : true
+function validateRequest(req, next, schema) {
+    const options = {
+        abortEarly: false, // include all errors
+        allowUnknown: true, // ignore unknown props
+        stripUnknown: true // remove unknown props
     };
-    const {err, value} = schema.validate(req.body, optiond);
 
-    if(err) {
-        next("Validate error: ${error.details.map(x => x.message).join(", ")}");
-    }else {
+    const { error, value } = schema.validate(req.body, options);
+    if (error) {
+        next(`Validation error: ${error.details.map(x => x.message).join(', ')}`);
+    } else {
         req.body = value;
         next();
     }
